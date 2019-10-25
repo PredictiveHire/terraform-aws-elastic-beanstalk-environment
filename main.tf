@@ -783,6 +783,13 @@ resource "aws_elastic_beanstalk_environment" "default" {
       value     = setting.value
     }
   }
+
+  dynamic "lifecycle" {
+    for_each = var.managed_actions_enabled ? [solution_stack_name] : []
+    content {
+      ignore_changes = [lifecycle.value]
+    }
+  }
 }
 
 data "aws_elb_service_account" "main" {
